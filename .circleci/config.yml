@@ -42,6 +42,21 @@ jobs:
           name: upload to pypi
           command: |
             paver release_pypi
+  image:
+    docker:
+      - image: ubuntu:19.04
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            apt-get -qq update
+            apt-get install -y -qq python3-pip curl
+            pip3 install pyinstaller
+      - run:
+          name: Generate installer
+          command: |
+            pyinstaller --windowed --onefile --clean buildnotifyapplet.py
 workflows:
   version: 2
   build_and_deploy:
